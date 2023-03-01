@@ -11,12 +11,11 @@ searched_date = None
 today = datetime.date.today()
 # walidacja daty, krok 1: sprawdzenie prawidlowosci formatu
 date_valid = date_pattern.match(str(today))
-# TODO krok 2 walidacji daty
 #
 while True:
-    latitude = input("Wpisz wybraną szerokość geograficzną (xx.yy): \n")
-    longitude = input("Wpisz wybraną długość geograficzną (xx.yy): \n")
-    searched_date = input("Wpisz wybraną datę (YYYY-mm-dd): \n")
+    latitude = input("Wpisz wybraną szerokość geograficzną (np. 60.39): \n")
+    longitude = input("Wpisz wybraną długość geograficzną (np. 5.32): \n")
+    searched_date = input("Wpisz wybraną datę w formacie YYYY-mm-dd: \n")
     if not searched_date:
         tomorrow = today + datetime.timedelta(days=1)
         searched_date = tomorrow
@@ -31,6 +30,12 @@ while True:
     else:
         data = response.json()
         rain_sum = data['daily']['rain_sum'][0]  # bierzemy idx 0 listy rain_sum
+        if float(rain_sum) == 0:
+            print("Nie będzie padać.")
+        elif float(rain_sum) > 0:
+            print("Będzie padać.")
+        else:
+            print("Nie wiem.")
 
 
 
