@@ -10,13 +10,13 @@ longitude = None
 searched_date = None
 today = datetime.date.today()
 # walidacja daty, krok 1: sprawdzenie prawidlowosci formatu
-date_valid = date_pattern.match(today)
+date_valid = date_pattern.match(str(today))
 # TODO krok 2 walidacji daty
 #
 while True:
-    latitude = input("Wpisz wybraną szerokość geograficzną (xx,yy):\n")
-    longitude = input("Wpisz wybraną długość geograficzną (xx, yy):\n")
-    searched_date = input("Wpisz wybraną datę (YYY-mm-dd):\n")
+    latitude = input("Wpisz wybraną szerokość geograficzną (xx.yy): \n")
+    longitude = input("Wpisz wybraną długość geograficzną (xx.yy): \n")
+    searched_date = input("Wpisz wybraną datę (YYYY-mm-dd): \n")
     if not searched_date:
         tomorrow = today + datetime.timedelta(days=1)
         searched_date = tomorrow
@@ -25,10 +25,14 @@ while True:
           f"Europe%2FLondon&start_date={searched_date}" \
           f"&end_date={searched_date}"
     response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
+    if not response.ok:
+        print(f"Błąd. Kod błędu: [{response.status_code}]")
+        quit()
     else:
-        print(f"Błąd. Kod błędu: {response.status_code}.")
+        data = response.json()
+        rain_sum = data['daily']['rain_sum'][0]  # bierzemy idx 0 listy rain_sum
+
+
 
 
 
